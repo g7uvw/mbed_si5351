@@ -1320,8 +1320,8 @@ uint8_t Si5351::si5351_write_bulk(uint8_t reg, uint8_t bytes, uint8_t *data)
     {
       data_a[i] = data[i];
     }
-    return i2c.write(i2c_bus_addr,data_a,bytes);
-    
+    return i2c.write(i2c_bus_addr,data_a,bytes+1);
+
     //Wire.beginTransmission(i2c_bus_addr);
     //Wire.write(addr);
 //    return i2c.write(addr,(char*) data,bytes);
