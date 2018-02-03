@@ -1,7 +1,6 @@
 /*
  * si5351.cpp - Si5351 library for Arduino
  * Ported to MBED by David Mills 2018
- *
  * Copyright (C) 2015 - 2016 Jason Milldrum <milldrum@gmail.com>
  *                           Dana H. Myers <k6jq@comcast.net>
                              David Mills <dave@webshed.org>
@@ -23,12 +22,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 #include <stdint.h>
 
-//#include "Arduino.h"
 #include "mbed.h"
-//#include "Wire.h"
+
 #include "si5351.h"
 
 Si5351Status dev_status = {.SYS_INIT = 0, .LOL_B = 0, .LOL_A = 0,.LOS = 0, .REVID = 0};
@@ -73,7 +70,7 @@ bool Si5351::init(uint8_t xtal_load_c, uint32_t xo_freq, int32_t corr)
 
     // Check for a device on the bus, bail out if it is not there
     //i2c.beginTransmission(i2c_bus_addr);
-    uint8_t reg_val;
+    //uint8_t reg_val;
   //reg_val = Wire.endTransmission();
 
     //if(reg_val == 0)
@@ -103,7 +100,7 @@ bool Si5351::init(uint8_t xtal_load_c, uint32_t xo_freq, int32_t corr)
 
         reset();
 
-        return true;
+        return status_reg;
     //}
     //else
     //{
@@ -1314,11 +1311,11 @@ void Si5351::set_ref_freq(uint32_t ref_freq, enum si5351_pll_input ref_osc)
 
 uint8_t Si5351::si5351_write_bulk(uint8_t reg, uint8_t bytes, uint8_t *data)
 {
-  char data_a[bytes];
+  char data_a[bytes+1];
   data_a[0] = reg;
-  for (uint16_t i = 1; i < bytes; i++)
+  for (uint16_t i = 0; i < bytes; i++)
     {
-      data_a[i] = data[i];
+      data_a[i+1] = data[i];
     }
     return i2c.write(i2c_bus_addr,data_a,bytes+1);
 
